@@ -160,10 +160,10 @@ void Send_Sensors(){
   // lectura de la temperatura y humedad del ambiente
   float h = dht.readHumidity(); //leer humedad
   float t = dht.readTemperature(); // leer temperatira en °F 
-  tempt.number = (uint16_t) (t * 100);
+  tempt.number = (uint16_t) ((t+2) * 100);
   //Serial.print("Temp: "); Serial.println((float)tempt.number/100);
   
-  hum.number =(uint16_t) (h*100);
+  hum.number =(uint16_t) ((h-5)*100);
  // Serial.print("Humidity: "); Serial.println((float)hum.number/100);
 
   windVel.number = (uint16_t) (windSpeed * 100);
@@ -391,13 +391,13 @@ ISR(WDT_vect) // Watchdog timer interrupt.
 
 void windDelay(){
    if (analogRead(windSensorPin) < 1000 && timerStart == 1){
-    timerDelay.start(3000);
+    timerDelay.start(5000);
     result = 1;
     timerStart = 0;
   }
   
   if (timerDelay.justFinished() && result == 1){
-    windSpeed = (1.25 * (pulses/3))*(1.492/2.4);  
+    windSpeed = (1.25 * (pulses/5))*(1.492/2.4);  
     pulses = 0;
     //windSpeed = 0;
     startTest = 1;
